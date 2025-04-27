@@ -16179,7 +16179,7 @@ const StyledArrowButton = newStyled.button`
   border: none;
   background-color: transparent;
 `;
-const StyledArrowImage = newStyled.img`
+const StyledArrowImage$1 = newStyled.img`
   position: absolute;
   top: 50%;
   left: 50%;
@@ -16229,7 +16229,7 @@ const Dropdown = ({ selected, onChange }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   return /* @__PURE__ */ jsxRuntimeExports.jsxs(StyledDropdownWrapper, { ref: wrapperRef, children: [
-    /* @__PURE__ */ jsxRuntimeExports.jsx(StyledArrowButton, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(StyledArrowImage, { src: "./arrow.png" }) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(StyledArrowButton, { children: /* @__PURE__ */ jsxRuntimeExports.jsx(StyledArrowImage$1, { src: "./arrow.png" }) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(StyledSelectedOption, { onClick: () => setIsOpen(!isOpen), children: selected || "카드사를 선택하세요" }),
     isOpen && /* @__PURE__ */ jsxRuntimeExports.jsx(StyledOptionList, { children: cardCompanies.map((value, idx) => /* @__PURE__ */ jsxRuntimeExports.jsx(
       StyledOptionItem,
@@ -16255,9 +16255,9 @@ const StyledButton = newStyled.button`
   cursor: pointer;
   margin-top: 20px;
 `;
-const Button = (props) => {
-  return /* @__PURE__ */ jsxRuntimeExports.jsx(StyledButton, { onClick: props.onClick, children: props.text });
-};
+const Button = reactExports.forwardRef(({ text, onClick }, ref) => {
+  return /* @__PURE__ */ jsxRuntimeExports.jsx(StyledButton, { ref, onClick, children: text });
+});
 const StyledText = newStyled.div`
   font-weight: ${(props) => {
   switch (props.type) {
@@ -16369,6 +16369,27 @@ const StyledCardPage = newStyled.div`
   overflow-y: auto;
   box-shadow: 5px 10px 10px rgba(0, 0, 0, 0.5);
 `;
+const StyledFloatingButton = newStyled.button`
+  position: fixed;
+  bottom: 20px;
+  right: 200px;
+  background: #fff;
+  background-color: #ffffff;
+  padding: 20px 20px;
+  border: none;
+  border-radius: 100%;
+  font-size: 18px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  z-index: 1000;
+`;
+const StyledArrowImage = newStyled.img`
+  position: absolute;
+  width: 15px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;
 const CardPage = () => {
   const {
     cardNumber,
@@ -16387,6 +16408,11 @@ const CardPage = () => {
         cardCompany: `${cardCompany}`
       }
     });
+  };
+  const confirmButtonRef = reactExports.useRef(null);
+  const handleScrollToConfirm = () => {
+    var _a;
+    (_a = confirmButtonRef.current) == null ? void 0 : _a.scrollIntoView({ behavior: "smooth" });
   };
   const formSteps = [
     {
@@ -16459,7 +16485,17 @@ const CardPage = () => {
       if (!step.shouldShow()) return null;
       return /* @__PURE__ */ jsxRuntimeExports.jsx(FormSection, { title: step.title, subtitle: step.subtitle, children: step.component }, step.id);
     }),
-    isFormValid && /* @__PURE__ */ jsxRuntimeExports.jsx(Button, { text: CARD_PAGE_TEXT.CHECK, onClick: navigateToSuccessPage })
+    isFormValid && /* @__PURE__ */ jsxRuntimeExports.jsxs(jsxRuntimeExports.Fragment, { children: [
+      /* @__PURE__ */ jsxRuntimeExports.jsx(StyledFloatingButton, { onClick: handleScrollToConfirm, children: /* @__PURE__ */ jsxRuntimeExports.jsx(StyledArrowImage, { src: "./arrow.png" }) }),
+      /* @__PURE__ */ jsxRuntimeExports.jsx(
+        Button,
+        {
+          ref: confirmButtonRef,
+          text: CARD_PAGE_TEXT.CHECK,
+          onClick: navigateToSuccessPage
+        }
+      )
+    ] })
   ] });
 };
 const StyledPage = newStyled.div`
